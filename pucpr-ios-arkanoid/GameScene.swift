@@ -12,7 +12,7 @@ class GameScene: SKScene {
     let bar: SKSpriteNode
     var moveTouch: UITouch?
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         self.bar = SKSpriteNode(color: UIColor.greenColor(), size: CGSize(width: 64, height: 8))
         self.bar.anchorPoint = CGPoint(x: 0.5, y: 0)
         super.init(coder: aDecoder)
