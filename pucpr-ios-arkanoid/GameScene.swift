@@ -44,8 +44,7 @@ class GameScene: SKScene {
             if grab(location, location: self.bar.position) {
                 self.moveTouch = touch
                 if waitingToBegin {
-                    self.removeChildrenInArray([self.startMessage])
-                    waitingToBegin = false
+                    self.beginMove()
                 }
                 break
             }
@@ -91,8 +90,21 @@ class GameScene: SKScene {
         waitingToBegin = true
         self.addChild(startMessage)
     }
+    
+    func beginMove() {
+        self.removeChildrenInArray([self.startMessage])
+        waitingToBegin = false
+        
+        let range = Float(60)
+        let initialAngle = Float(270)//randomCGFloat() * range + 270 - range / 2
+        var direction = directionFromAngle(degrees: initialAngle)
+    }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+    }
+    
+    func randomCGFloat() -> Float {
+        return Float(arc4random()) /  Float(UInt32.max)
     }
 }
