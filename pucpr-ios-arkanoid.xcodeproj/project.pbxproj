@@ -15,7 +15,7 @@
 		13856DA619FC005700AD73A0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13856DA519FC005700AD73A0 /* Images.xcassets */; };
 		13856DA919FC005700AD73A0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13856DA719FC005700AD73A0 /* LaunchScreen.xib */; };
 		13856DB519FC005700AD73A0 /* pucpr_ios_arkanoidTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13856DB419FC005700AD73A0 /* pucpr_ios_arkanoidTests.swift */; };
-		13EC765919FC125000901745 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EC765819FC125000901745 /* CGPoint.swift */; };
+		13EC765919FC125000901745 /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EC765819FC125000901745 /* CGVector.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,7 +41,7 @@
 		13856DAE19FC005700AD73A0 /* pucpr-ios-arkanoidTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "pucpr-ios-arkanoidTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13856DB319FC005700AD73A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13856DB419FC005700AD73A0 /* pucpr_ios_arkanoidTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pucpr_ios_arkanoidTests.swift; sourceTree = "<group>"; };
-		13EC765819FC125000901745 /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
+		13EC765819FC125000901745 /* CGVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGVector.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +91,7 @@
 				13856DA519FC005700AD73A0 /* Images.xcassets */,
 				13856DA719FC005700AD73A0 /* LaunchScreen.xib */,
 				13856D9819FC005700AD73A0 /* Supporting Files */,
-				13EC765819FC125000901745 /* CGPoint.swift */,
+				13EC765819FC125000901745 /* CGVector.swift */,
 			);
 			path = "pucpr-ios-arkanoid";
 			sourceTree = "<group>";
@@ -224,7 +224,7 @@
 			files = (
 				13856D9F19FC005700AD73A0 /* GameScene.swift in Sources */,
 				13856DA119FC005700AD73A0 /* GameViewController.swift in Sources */,
-				13EC765919FC125000901745 /* CGPoint.swift in Sources */,
+				13EC765919FC125000901745 /* CGVector.swift in Sources */,
 				13856D9B19FC005700AD73A0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
