@@ -37,6 +37,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func setupWorld() {
         self.physicsWorld.gravity = CGVector.zeroVector
         self.physicsWorld.contactDelegate = self
+        createBricks()
+    }
+    
+    func createBricks() {
+        
     }
     
     func setupBar() {
@@ -48,6 +53,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         body.collisionBitMask = noCategory
         body.contactTestBitMask = ballCategory
         self.bar.physicsBody = body
+    }
+    
+    func createBrick(x: Float, y: Float) {
+        let brick = SKSpriteNode(color: UIColor.yellowColor(), size: CGSize(width: 16, height: 8))
+        brick.position = CGPoint(x: CGFloat(x), y: CGFloat(y))
+        let body = SKPhysicsBody(rectangleOfSize: brick.size)
+        body.dynamic = false
+        body.contactTestBitMask = brickCategory
+        brick.physicsBody = body
+        self.addChild(brick)
     }
     
     override func didMoveToView(view: SKView) {
@@ -119,8 +134,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createBall() -> SKSpriteNode {
-        let ball = SKSpriteNode(color: UIColor.blueColor(), size: CGSize(width: 8, height: 8))
-        let body = SKPhysicsBody(circleOfRadius: 4)
+        let ball = SKSpriteNode(imageNamed: "ballBlue")
+        let body = SKPhysicsBody(circleOfRadius: ball.size.height / 2)
         body.dynamic = true
         body.allowsRotation = false
         body.restitution = 1.0
@@ -141,7 +156,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let initialAngle = randomCGFloat() * range + 270 - range / 2
         var direction = directionFromAngle(degrees: initialAngle)
         
-        self.balls[0].physicsBody?.applyImpulse(direction * 0.6)
+        self.balls[0].physicsBody?.applyImpulse(direction * 1.2)
     }
    
     override func update(currentTime: CFTimeInterval) {
