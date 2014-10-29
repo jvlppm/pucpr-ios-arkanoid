@@ -194,7 +194,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         else if ballRect.minX >= objRect.maxX - ballRect.width / 2 {
             ball.velocity.dx = abs(ball.velocity.dx)
         }
-        if ballRect.minY <= objRect.maxY - ballRect.height / 2 {
+        else if ballRect.minY <= objRect.maxY - ballRect.height / 2 {
             ball.velocity.dy = -abs(ball.velocity.dy)
         }
         else if ballRect.maxY >= objRect.minY + ballRect.height / 2 {
