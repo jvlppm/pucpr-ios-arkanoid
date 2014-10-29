@@ -9,11 +9,8 @@
 import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    let noCategory: UInt32 = 0
-    let worldCategory: UInt32 = 1 << 0
-    let barCategory: UInt32 = 1 << 1
-    let ballCategory: UInt32 = 1 << 2
-    let brickCategory: UInt32 = 1 << 3
+
+    let levels = Levels()
     
     let colors = ["element_blue_rectangle", "element_grey_rectangle"]
     
@@ -39,23 +36,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func setupWorld() {
         self.physicsWorld.gravity = CGVector.zeroVector
         self.physicsWorld.contactDelegate = self
+        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: frame)
+        self.physicsBody!.categoryBitMask = Category.World
         createBricks()
-    }
-    
-    func createBricks() {
-        let minY = Float(frame.height - 16)
-        let minX = 32
-        let maxX = frame.width - 32
-        
-        let columns = 8
-        let columnsWidth = columns * 64
-        let initialX = (Float(frame.width) - Float(columnsWidth)) / 2
-        
-        for row in 0...3 {
-            for i in 0...8 {
-                createBrick(initialX + Float(i * 64), y: minY - Float(32 * row), strength: 1)
-            }
-        }
     }
     
     func setupBar() {
@@ -63,26 +46,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         body.friction = 0
         body.restitution = 1
         body.dynamic = false
-        body.categoryBitMask = barCategory
-        body.collisionBitMask = noCategory
-        body.contactTestBitMask = ballCategory
+        body.categoryBitMask = Category.Bar
+        body.collisionBitMask = Category.None
+        body.contactTestBitMask = Category.Ball
         self.bar.physicsBody = body
     }
     
-    func createBrick(x: Float, y: Float, strength: Int) {
-        let colorIndex = max(strength, self.colors.count - 1)
-        var imageName = self.colors[colorIndex]
-        
-        let brick = SKSpriteNode(imageNamed: imageName)
-        brick.position = CGPoint(x: CGFloat(x), y: CGFloat(y))
-        var size = brick.size
-        let body = SKPhysicsBody(rectangleOfSize: brick.size)
-        body.dynamic = false
-        body.contactTestBitMask = brickCategory
-        brick.physicsBody = body
-        brick.userData = NSMutableDictionary()
-        brick.userData!["strength"] = strength
-        self.addChild(brick)
+    func createBall() -> SKSpriteNode {
+        let ball = SKSpriteNode(imageNamed: "ballBlue")
+        let body = SKPhysicsBody(circleOfRadius: ball.size.height / 2)
+        body.dynamic = true
+        body.allowsRotation = false
+        body.restitution = 1.0
+        body.friction = 0.0
+        body.linearDamping = 0.0
+        body.categoryBitMask = Category.Ball
+        body.collisionBitMask = Category.None
+        body.contactTestBitMask = Category.World | Category.Bar | Category.Brick
+        ball.physicsBody = body
+        return ball
+    }
+    
+    func createBricks() {
+        self.levels.loadLevel(self, number: 0)
     }
     
     override func didMoveToView(view: SKView) {
@@ -153,67 +139,46 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(startMessage)
     }
     
-    func createBall() -> SKSpriteNode {
-        let ball = SKSpriteNode(imageNamed: "ballBlue")
-        let body = SKPhysicsBody(circleOfRadius: ball.size.height / 2)
-        body.dynamic = true
-        body.allowsRotation = false
-        body.restitution = 1.0
-        body.friction = 0.0
-        body.linearDamping = 0.0
-        body.categoryBitMask = ballCategory
-        body.collisionBitMask = noCategory
-        body.contactTestBitMask = worldCategory | barCategory | brickCategory
-        ball.physicsBody = body
-        return ball
-    }
-    
     func beginMove() {
         self.removeChildrenInArray([self.startMessage])
         waitingToBegin = false
         
-        let range = Float(60)
-        let initialAngle = randomCGFloat() * range + 270 - range / 2
-        var direction = directionFromAngle(degrees: initialAngle)
+        let ball = self.balls[0]
         
-        self.balls[0].physicsBody?.applyImpulse(direction * 3)
+        let range = Float(60)
+        let initialAngle = randomFloat() * range + 270 - range / 2
+        var direction = CGVector(distance: self.bar.position - ball.position)
+        direction = direction + CGVector(dx: 0, dy: ball.size.height)
+        direction = direction.normalize()
+        
+        ball.physicsBody?.applyImpulse(direction * 6)
     }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        for ball in self.balls {
-            let body = ball.physicsBody!
-            if ball.position.x < 0 {
-                body.velocity.dx = abs(body.velocity.dx)
-            }
-            else if ball.position.x > self.frame.width {
-                body.velocity.dx = -abs(body.velocity.dx)
-            }
-            
-            if ball.position.y < 0 {
-                self.balls = self.balls.filter { $0 != ball }
-                ball.removeFromParent()
-                if self.balls.count == 0 {
-                    self.restartBall()
-                }
-            }
-            else if ball.position.y > self.frame.height {
-                body.velocity.dy = -abs(body.velocity.dy)
-            }
-        }
     }
     
-    func randomCGFloat() -> Float {
+    func randomFloat() -> Float {
         return Float(arc4random()) /  Float(UInt32.max)
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
         
-        if contact.bodyA.categoryBitMask & ballCategory != 0 {
+        if contact.bodyB.categoryBitMask & Category.World != 0 {
+            reflectWalls(contact.bodyA)
+            return
+        }
+        
+        if contact.bodyA.categoryBitMask & Category.World != 0 {
+            reflectWalls(contact.bodyB)
+            return
+        }
+        
+        if contact.bodyA.categoryBitMask & Category.Ball != 0 {
             reflectBall(contact.bodyA!, object: contact.bodyB!)
         }
         
-        if contact.bodyB.categoryBitMask & ballCategory != 0 {
+        if contact.bodyB.categoryBitMask & Category.Ball != 0 {
             reflectBall(contact.bodyB!, object: contact.bodyA!)
         }
     }
@@ -223,33 +188,59 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let objRect = object.node!.frame
         let objNode = object.node! as SKSpriteNode
         
-        if ballRect.maxX <= objRect.minX + ballRect.width {
+        if ballRect.maxX <= objRect.minX + ballRect.width / 2 {
             ball.velocity.dx = -abs(ball.velocity.dx)
         }
-        else if ballRect.minX >= objRect.maxX - ballRect.width {
+        else if ballRect.minX >= objRect.maxX - ballRect.width / 2 {
             ball.velocity.dx = abs(ball.velocity.dx)
         }
-        if ballRect.minY <= objRect.maxY - ballRect.height {
+        if ballRect.minY <= objRect.maxY - ballRect.height / 2 {
             ball.velocity.dy = -abs(ball.velocity.dy)
         }
-        else if ballRect.maxY >= objRect.minY + ballRect.height {
+        else if ballRect.maxY >= objRect.minY + ballRect.height / 2 {
             ball.velocity.dy = abs(ball.velocity.dy)
         }
         
-        if objNode == self.bar {
+        if objNode == self.bar && ballRect.minY >= objRect.midY {
             let speed = ball.velocity.length()
-            ball.velocity = directionFromAngle(degrees: 90 + randomCGFloat() * 160 - 80) * CGFloat(speed)
+            var position = (ballRect.midX - objRect.minX) / objRect.width
+            ball.velocity = directionFromAngle(degrees: 170 - position * 160) * CGFloat(speed)
         }
-        else if object.categoryBitMask & brickCategory != 0 {
+        else if object.categoryBitMask & Category.Brick != 0 {
             
-            let i = objNode.userData!["strength"] as Int
-            if i == 0 {
+            let color = objNode.userData!["color"] as String
+            
+            if color.lowercaseString == color {
                 objNode.removeFromParent()
             }
             else {
-                objNode.texture = SKTexture(imageNamed: self.colors[i - 1])
-                objNode.userData!["strength"] = i - 1
+                objNode.texture = SKTexture(imageNamed: getImageName(color.lowercaseString))
+                objNode.userData!["color"] = color.lowercaseString
             }
+        }
+    }
+    
+    func reflectWalls(body: SKPhysicsBody) {
+        let ball = body.node!
+        let leaveSize = ball.frame.width
+        if ball.position.x - leaveSize < 0 {
+            body.velocity.dx = abs(body.velocity.dx)
+        }
+        else if ball.position.x + leaveSize > self.frame.width {
+            body.velocity.dx = -abs(body.velocity.dx)
+        }
+        
+        if ball.position.y - leaveSize < 0 {
+            self.balls = self.balls.filter { $0 != ball }
+            self.runAction(SKAction.runBlock({
+                if self.balls.count == 0 {
+                    self.restartBall()
+                }
+                ball.removeFromParent()
+            }))
+        }
+        else if ball.position.y + leaveSize > self.frame.height {
+            body.velocity.dy = -abs(body.velocity.dy)
         }
     }
 }

@@ -16,6 +16,8 @@
 		13856DA919FC005700AD73A0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13856DA719FC005700AD73A0 /* LaunchScreen.xib */; };
 		13856DB519FC005700AD73A0 /* pucpr_ios_arkanoidTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13856DB419FC005700AD73A0 /* pucpr_ios_arkanoidTests.swift */; };
 		13EC765919FC125000901745 /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EC765819FC125000901745 /* CGVector.swift */; };
+		CF48C1391A00840000138A09 /* Levels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF48C1381A00840000138A09 /* Levels.swift */; };
+		CF48C13B1A008C6500138A09 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF48C13A1A008C6500138A09 /* Category.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,8 @@
 		13856DB319FC005700AD73A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13856DB419FC005700AD73A0 /* pucpr_ios_arkanoidTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pucpr_ios_arkanoidTests.swift; sourceTree = "<group>"; };
 		13EC765819FC125000901745 /* CGVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGVector.swift; sourceTree = "<group>"; };
+		CF48C1381A00840000138A09 /* Levels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Levels.swift; sourceTree = "<group>"; };
+		CF48C13A1A008C6500138A09 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +96,8 @@
 				13856DA719FC005700AD73A0 /* LaunchScreen.xib */,
 				13856D9819FC005700AD73A0 /* Supporting Files */,
 				13EC765819FC125000901745 /* CGVector.swift */,
+				CF48C1381A00840000138A09 /* Levels.swift */,
+				CF48C13A1A008C6500138A09 /* Category.swift */,
 			);
 			path = "pucpr-ios-arkanoid";
 			sourceTree = "<group>";
@@ -222,10 +228,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF48C1391A00840000138A09 /* Levels.swift in Sources */,
 				13856D9F19FC005700AD73A0 /* GameScene.swift in Sources */,
 				13856DA119FC005700AD73A0 /* GameViewController.swift in Sources */,
 				13EC765919FC125000901745 /* CGVector.swift in Sources */,
 				13856D9B19FC005700AD73A0 /* AppDelegate.swift in Sources */,
+				CF48C13B1A008C6500138A09 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
