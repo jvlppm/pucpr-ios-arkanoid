@@ -18,7 +18,7 @@ func getImageName(id: String) -> String {
         case "g", "G":
             color = "green"
             break
-        case "g", "G":
+        case "c", "C":
             color = "grey"
             break
         case "p", "P":
@@ -50,33 +50,46 @@ class Level {
         self.data = data
     }
     
-    func load(view: SKNode) {
+    func load(view: SKNode) -> Array<SKNode> {
+        var bricks: Array<SKNode> = []
         let frame = view.frame
         
-        let minY = CGFloat(frame.height - 16)
-        let minX = 32
-        let maxX = frame.width - 32
+        let brickWidth = frame.width / 10
+        let brickHeight = frame.height / 10
+        
+        let minY = CGFloat(frame.height) - brickHeight / 2
+        let minX = -brickWidth / 2
+        let maxX = frame.width - brickWidth / 2
         
         let columns = self.data[0].count
-        let columnsWidth = columns * 64
-        let initialX = (CGFloat(frame.width) - CGFloat(columnsWidth - 64)) / 2
+        let columnsWidth = CGFloat(columns) * brickWidth
+        let initialX = (CGFloat(frame.width) - CGFloat(columnsWidth - brickWidth)) / 2
         
         for row in 0...self.data.count - 1 {
             for col in 0...self.data[row].count - 1 {
-                let x: CGFloat = initialX + CGFloat(col) * 64
-                let y: CGFloat = minY - 32 * CGFloat(row)
+                let x: CGFloat = initialX + CGFloat(col) * brickWidth
+                let y: CGFloat = minY - brickHeight * CGFloat(row)
                 let brick: String = self.data[row][col]
-                createBrick(view, x: x, y: y, color: brick)
+                let node = createBrick(view, x: x, y: y, color: brick)
+                if node != nil {
+                    node!.size = CGSize(width: brickWidth, height: brickHeight)
+                    bricks.append(node!)
+                }
             }
         }
+        
+        return bricks
     }
     
-    func createBrick(view: SKNode, x: CGFloat, y: CGFloat, color: String) {
+    func createBrick(view: SKNode, x: CGFloat, y: CGFloat, color: String) -> SKSpriteNode? {
         if color.isEmpty {
-            return
+            return nil
         }
         
         var imageName = getImageName(color)
+        if imageName.isEmpty {
+            return nil
+        }
         
         let brick = SKSpriteNode(imageNamed: imageName)
         brick.position = CGPoint(x: x, y: y)
@@ -90,6 +103,7 @@ class Level {
         brick.userData!["color"] = color
         
         view.addChild(brick)
+        return brick
     }
 }
 
@@ -98,13 +112,41 @@ class Levels {
     
     init() {
         levelList.append(Level(data: [
-            ["b", "b", "b", "b"],
-            ["p", "p", "p", "p"],
-            ["g", "g", "g", "g"],
+            ["B", "b", "B", "b", "B"],
+            ["g", "G", "g", "G", "g"],
+        ]))
+        
+        levelList.append(Level(data: [
+            ["B", "B", " ", "B", "B"],
+            ["p", " ", "p", " ", "p"],
+            ["G", "G", " ", "G", "G"],
+        ]))
+        
+        levelList.append(Level(data: [
+            [" ", " ", "G", "G", "G", " ", " "],
+            [" ", " ", " ", "b" ," ", " ", " "],
+            [" ", " ", "b", " ", "b", " ", " "],
+            ["b", "b", " ", " ", " ", "b", "b"],
+        ]))
+        
+        levelList.append(Level(data: [
+            [" ", " ", " ", "b", " ", " ", " "],
+            [" ", " ", "b", "C", "b", " ", " "],
+            [" ", "b", "C", "C", "C", "b", " "],
+            ["b", "C", "C", "C", "C", "C", "b"],
+        ]))
+        
+        levelList.append(Level(data: [
+            ["p", " ", " ", " ", " ", "b", " ", " ", "B"],
+            ["p", " ", " ", " ", " ", " ", " ", "p", "p"],
+            ["p", " ", "P", "P", "P", "P", "P", "P", "P"],
+            ["p", " ", " ", " ", " ", " ", " ", " ", " "],
+            ["p", " ", " ", " ", " ", " ", " ", " ", " "],
+            ["P", "P", "P", "P", "P", "P", "P", " "],
         ]))
     }
     
-    func loadLevel(view: SKNode, number: Int) {
-        self.levelList[number].load(view)
+    func loadLevel(view: SKNode, number: Int) -> Array<SKNode> {
+        return self.levelList[number].load(view)
     }
 }

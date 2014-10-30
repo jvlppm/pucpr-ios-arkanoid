@@ -11,6 +11,7 @@ import SpriteKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
     let levels = Levels()
+    var currentLevel = 0
     
     let colors = ["element_blue_rectangle", "element_grey_rectangle"]
     
@@ -20,6 +21,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var balls: Array<SKSpriteNode>
     var moveTouch: UITouch?
     
+    var bricks: Array<SKNode>
+    
     var waitingToBegin: Bool
     
     required init?(coder aDecoder: NSCoder) {
@@ -27,7 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.startMessage = SKLabelNode(text: "Posicione a barra para iniciar")
         self.balls = []
         self.waitingToBegin = true
-        
+        self.bricks = []
         super.init(coder: aDecoder)
         
         self.addChild(bar)
@@ -36,8 +39,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func setupWorld() {
         self.physicsWorld.gravity = CGVector.zeroVector
         self.physicsWorld.contactDelegate = self
-        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: frame)
-        self.physicsBody!.categoryBitMask = Category.World
         createBricks()
     }
     
@@ -67,8 +68,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return ball
     }
     
+    func advanceLevel() {
+        self.restartBall()
+        self.currentLevel++
+        self.createBricks()
+    }
+    
     func createBricks() {
-        self.levels.loadLevel(self, number: 0)
+        if self.currentLevel >= self.levels.levelList.count {
+            self.currentLevel = 0
+        }
+        self.bricks = self.levels.loadLevel(self, number: self.currentLevel)
     }
     
     override func didMoveToView(view: SKView) {
@@ -134,7 +144,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let ball = createBall()
         ball.position = CGPoint(x: self.frame.width / 2, y: self.frame.height * 0.3)
         self.addChild(ball)
-        self.balls.append(ball)
+        self.balls = [ball]
         waitingToBegin = true
         self.addChild(startMessage)
     }
@@ -156,6 +166,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        for ball in self.balls {
+            bounceWalls(ball.physicsBody!)
+        }
+        
+        if self.bricks.count == 0 {
+            self.advanceLevel()
+        }
     }
     
     func randomFloat() -> Float {
@@ -163,27 +180,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
-        
-        if contact.bodyB.categoryBitMask & Category.World != 0 {
-            reflectWalls(contact.bodyA)
-            return
-        }
-        
-        if contact.bodyA.categoryBitMask & Category.World != 0 {
-            reflectWalls(contact.bodyB)
-            return
-        }
-        
         if contact.bodyA.categoryBitMask & Category.Ball != 0 {
-            reflectBall(contact.bodyA!, object: contact.bodyB!)
+            bounceBrick(contact.bodyA!, object: contact.bodyB!)
         }
         
         if contact.bodyB.categoryBitMask & Category.Ball != 0 {
-            reflectBall(contact.bodyB!, object: contact.bodyA!)
+            bounceBrick(contact.bodyB!, object: contact.bodyA!)
         }
     }
     
-    func reflectBall(ball: SKPhysicsBody, object: SKPhysicsBody) {
+    func bounceBrick(ball: SKPhysicsBody, object: SKPhysicsBody) {
         let ballRect = ball.node!.frame
         let objRect = object.node!.frame
         let objNode = object.node! as SKSpriteNode
@@ -203,26 +209,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if objNode == self.bar && ballRect.minY >= objRect.midY {
             let speed = ball.velocity.length()
-            var position = (ballRect.midX - objRect.minX) / objRect.width
-            ball.velocity = directionFromAngle(degrees: 170 - position * 160) * CGFloat(speed)
+            let position = (ballRect.midX - objRect.minX) / objRect.width
+            let variation = CGFloat(randomFloat() * 0.1 - 0.05)
+            ball.velocity = directionFromAngle(degrees: 170 - (position * 0.95 + variation) * 160) * CGFloat(speed)
         }
         else if object.categoryBitMask & Category.Brick != 0 {
-            
-            let color = objNode.userData!["color"] as String
-            
-            if color.lowercaseString == color {
-                objNode.removeFromParent()
-            }
-            else {
-                objNode.texture = SKTexture(imageNamed: getImageName(color.lowercaseString))
-                objNode.userData!["color"] = color.lowercaseString
-            }
+            self.hitBrick(objNode)
         }
     }
     
-    func reflectWalls(body: SKPhysicsBody) {
+    func bounceWalls(body: SKPhysicsBody) {
         let ball = body.node!
-        let leaveSize = ball.frame.width
+        let leaveSize = ball.frame.width / 2
         if ball.position.x - leaveSize < 0 {
             body.velocity.dx = abs(body.velocity.dx)
         }
@@ -241,6 +239,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         else if ball.position.y + leaveSize > self.frame.height {
             body.velocity.dy = -abs(body.velocity.dy)
+        }
+    }
+    
+    func hitBrick(brick: SKSpriteNode) {
+        let color = brick.userData!["color"] as String
+        
+        if color.lowercaseString == color {
+            brick.removeFromParent()
+            self.bricks = self.bricks.filter { $0 != brick }
+        }
+        else {
+            brick.texture = SKTexture(imageNamed: getImageName(color.lowercaseString))
+            brick.userData!["color"] = color.lowercaseString
         }
     }
 }
