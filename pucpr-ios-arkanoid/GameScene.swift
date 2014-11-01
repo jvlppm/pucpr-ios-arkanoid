@@ -17,6 +17,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let startMessage: SKLabelNode
     let bar: SKSpriteNode
+    let scoreLabel: SKLabelNode
     
     var balls: Array<SKSpriteNode>
     var moveTouch: UITouch?
@@ -24,6 +25,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var bricks: Array<SKNode>
     
     var waitingToBegin: Bool
+
+    var score = 0
     
     required init?(coder aDecoder: NSCoder) {
         self.bar = SKSpriteNode(imageNamed: "paddleBlue")
@@ -31,9 +34,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.balls = []
         self.waitingToBegin = true
         self.bricks = []
+        self.scoreLabel = SKLabelNode()
         super.init(coder: aDecoder)
-        
-        self.addChild(bar)
+        self.addChild(scoreLabel)
     }
     
     func setupWorld() {
@@ -51,6 +54,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         body.collisionBitMask = Category.None
         body.contactTestBitMask = Category.Ball
         self.bar.physicsBody = body
+        self.addChild(bar)
+    }
+
+    func setScore(value: Int) {
+        self.score = value
+        scoreLabel.text = toString(value)
+        self.scoreLabel.position = CGPoint(x: scoreLabel.frame.width / 2, y: frame.height - scoreLabel.frame.height)
     }
     
     func createBall() -> SKSpriteNode {
@@ -87,6 +97,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.setupBar()
         self.setupWorld()
+        self.setScore(score)
         restartBall()
     }
     
@@ -246,10 +257,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let color = brick.userData!["color"] as String
         
         if color.lowercaseString == color {
+            setScore(score + 100)
             brick.removeFromParent()
             self.bricks = self.bricks.filter { $0 != brick }
         }
         else {
+            setScore(score + 30)
             brick.texture = SKTexture(imageNamed: getImageName(color.lowercaseString))
             brick.userData!["color"] = color.lowercaseString
         }

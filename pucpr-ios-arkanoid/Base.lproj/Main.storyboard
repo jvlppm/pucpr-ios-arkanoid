@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LVB-YS-i5n">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="rfc-Tg-cAb">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
         <!--Game View Controller-->
@@ -20,6 +20,49 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="btX-cZ-eVz" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1262" y="443"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="4PJ-uU-bun">
+            <objects>
+                <viewController id="rfc-Tg-cAb" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nYP-n3-g6I"/>
+                        <viewControllerLayoutGuide type="bottom" id="oDs-h8-yov"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Zf2-NQ-nH7">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O3b-N6-4f9">
+                                <rect key="frame" x="241" y="342" width="118" height="30"/>
+                                <state key="normal" title="New Game">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="LVB-YS-i5n" kind="show" id="KaU-ay-3sa"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" text="&lt;Title>" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="SZL-aN-Khi">
+                                <rect key="frame" x="221" y="79" width="159" height="78"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="HiraMinProN-W3" family="Hiragino Mincho ProN" pointSize="46"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="O3b-N6-4f9" secondAttribute="centerY" constant="-57" id="SGV-wO-82o"/>
+                            <constraint firstAttribute="centerX" secondItem="SZL-aN-Khi" secondAttribute="centerX" constant="-9.5" id="Slh-QA-zmz"/>
+                            <constraint firstAttribute="centerX" secondItem="SZL-aN-Khi" secondAttribute="centerX" constant="-0.5" id="Tbp-21-3g9"/>
+                            <constraint firstAttribute="centerX" secondItem="O3b-N6-4f9" secondAttribute="centerX" id="fVR-QH-vFX"/>
+                            <constraint firstAttribute="centerX" secondItem="SZL-aN-Khi" secondAttribute="centerX" constant="-0.5" id="vKi-6f-yHB"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zae-Ix-vCc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="471" y="443"/>
         </scene>
     </scenes>
 </document>
