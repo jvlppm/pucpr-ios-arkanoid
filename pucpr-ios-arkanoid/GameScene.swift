@@ -62,7 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func setupBackground() {
         
         backgroundContainer.zPosition = -1
-        backgroundContainer.alpha = 0.6
+        backgroundContainer.alpha = 0.3
         self.addChild(backgroundContainer)
     }
     
@@ -85,7 +85,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let paintingSize = painting.size
         var scaleRatio: CGFloat? = nil
         var imageRatio = paintingSize.width / paintingSize.height
-        if paintingSize.width < paintingSize.height {
+        if paintingSize.width / paintingSize.height < frame.width / frame.height {
             scaleRatio = frame.width / paintingSize.width
         }
         else {
