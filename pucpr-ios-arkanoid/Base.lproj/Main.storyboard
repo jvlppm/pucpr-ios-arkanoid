@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="rfc-Tg-cAb">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -35,11 +36,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="effects test_0" translatesAutoresizingMaskIntoConstraints="NO" id="r7D-Fa-cES">
+                            <imageView userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="painting4" translatesAutoresizingMaskIntoConstraints="NO" id="ZLp-jS-6dQ">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="title_pieces" translatesAutoresizingMaskIntoConstraints="NO" id="sPK-in-XF6">
+                                <rect key="frame" x="-26" y="-78" width="626" height="239"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="sPK-in-XF6" secondAttribute="height" multiplier="626:239" id="miO-Ae-rk8"/>
+                                    <constraint firstAttribute="width" secondItem="sPK-in-XF6" secondAttribute="height" multiplier="89:34" id="yJW-Du-eI2"/>
+                                </constraints>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O3b-N6-4f9">
-                                <rect key="frame" x="241" y="342" width="118" height="30"/>
+                                <rect key="frame" x="215" y="360" width="171" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                 <state key="normal" title="New Game">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -48,31 +57,38 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" text="&lt;Title>" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="SZL-aN-Khi">
-                                <rect key="frame" x="212" y="79" width="177" height="65"/>
+                                <rect key="frame" x="212" y="112" width="177" height="65"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                                </accessibility>
                                 <fontDescription key="fontDescription" name="HiraMinProN-W6" family="Hiragino Mincho ProN" pointSize="46"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="r7D-Fa-cES" firstAttribute="top" secondItem="nYP-n3-g6I" secondAttribute="bottom" id="5Tz-VE-cwZ"/>
-                            <constraint firstItem="r7D-Fa-cES" firstAttribute="leading" secondItem="Zf2-NQ-nH7" secondAttribute="leadingMargin" id="A0J-dw-K4d"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="r7D-Fa-cES" secondAttribute="trailing" id="QVV-UN-V0m"/>
+                            <constraint firstItem="oDs-h8-yov" firstAttribute="top" secondItem="ZLp-jS-6dQ" secondAttribute="bottom" id="1cB-D4-bkN"/>
+                            <constraint firstItem="sPK-in-XF6" firstAttribute="leading" secondItem="Zf2-NQ-nH7" secondAttribute="leadingMargin" constant="-50" id="2BF-t2-Pqe"/>
+                            <constraint firstItem="ZLp-jS-6dQ" firstAttribute="leading" secondItem="Zf2-NQ-nH7" secondAttribute="leadingMargin" id="KdC-iz-RR6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="sPK-in-XF6" secondAttribute="trailing" constant="-50" id="L3f-H4-USD"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ZLp-jS-6dQ" secondAttribute="trailing" id="PZg-hf-hiY"/>
                             <constraint firstAttribute="centerY" secondItem="O3b-N6-4f9" secondAttribute="centerY" constant="-57" id="SGV-wO-82o"/>
                             <constraint firstAttribute="centerX" secondItem="SZL-aN-Khi" secondAttribute="centerX" constant="-9.5" id="Slh-QA-zmz"/>
                             <constraint firstAttribute="centerX" secondItem="SZL-aN-Khi" secondAttribute="centerX" constant="-0.5" id="Tbp-21-3g9"/>
+                            <constraint firstItem="ZLp-jS-6dQ" firstAttribute="top" secondItem="nYP-n3-g6I" secondAttribute="bottom" id="bmd-F7-AeH"/>
                             <constraint firstAttribute="centerX" secondItem="O3b-N6-4f9" secondAttribute="centerX" id="fVR-QH-vFX"/>
-                            <constraint firstItem="oDs-h8-yov" firstAttribute="top" secondItem="r7D-Fa-cES" secondAttribute="bottom" id="rx0-Bn-qKZ"/>
+                            <constraint firstItem="sPK-in-XF6" firstAttribute="top" secondItem="nYP-n3-g6I" secondAttribute="bottom" constant="-100" id="tHe-Ox-oBF"/>
                             <constraint firstAttribute="centerX" secondItem="SZL-aN-Khi" secondAttribute="centerX" constant="-0.5" id="vKi-6f-yHB"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zae-Ix-vCc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="471" y="443"/>
+            <point key="canvasLocation" x="477" y="443"/>
         </scene>
     </scenes>
     <resources>
-        <image name="effects test_0" width="1920" height="1080"/>
+        <image name="painting4" width="2560" height="1600"/>
+        <image name="title_pieces" width="1713" height="641"/>
     </resources>
 </document>
