@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="rfc-Tg-cAb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="rfc-Tg-cAb">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Game View Controller-->
@@ -34,6 +35,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="effects test_0" translatesAutoresizingMaskIntoConstraints="NO" id="r7D-Fa-cES">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O3b-N6-4f9">
                                 <rect key="frame" x="241" y="342" width="118" height="30"/>
                                 <state key="normal" title="New Game">
@@ -44,18 +48,21 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" text="&lt;Title>" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="SZL-aN-Khi">
-                                <rect key="frame" x="221" y="79" width="159" height="78"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="HiraMinProN-W3" family="Hiragino Mincho ProN" pointSize="46"/>
+                                <rect key="frame" x="212" y="79" width="177" height="65"/>
+                                <fontDescription key="fontDescription" name="HiraMinProN-W6" family="Hiragino Mincho ProN" pointSize="46"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="r7D-Fa-cES" firstAttribute="top" secondItem="nYP-n3-g6I" secondAttribute="bottom" id="5Tz-VE-cwZ"/>
+                            <constraint firstItem="r7D-Fa-cES" firstAttribute="leading" secondItem="Zf2-NQ-nH7" secondAttribute="leadingMargin" id="A0J-dw-K4d"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="r7D-Fa-cES" secondAttribute="trailing" id="QVV-UN-V0m"/>
                             <constraint firstAttribute="centerY" secondItem="O3b-N6-4f9" secondAttribute="centerY" constant="-57" id="SGV-wO-82o"/>
                             <constraint firstAttribute="centerX" secondItem="SZL-aN-Khi" secondAttribute="centerX" constant="-9.5" id="Slh-QA-zmz"/>
                             <constraint firstAttribute="centerX" secondItem="SZL-aN-Khi" secondAttribute="centerX" constant="-0.5" id="Tbp-21-3g9"/>
                             <constraint firstAttribute="centerX" secondItem="O3b-N6-4f9" secondAttribute="centerX" id="fVR-QH-vFX"/>
+                            <constraint firstItem="oDs-h8-yov" firstAttribute="top" secondItem="r7D-Fa-cES" secondAttribute="bottom" id="rx0-Bn-qKZ"/>
                             <constraint firstAttribute="centerX" secondItem="SZL-aN-Khi" secondAttribute="centerX" constant="-0.5" id="vKi-6f-yHB"/>
                         </constraints>
                     </view>
@@ -65,4 +72,7 @@
             <point key="canvasLocation" x="471" y="443"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="effects test_0" width="1920" height="1080"/>
+    </resources>
 </document>

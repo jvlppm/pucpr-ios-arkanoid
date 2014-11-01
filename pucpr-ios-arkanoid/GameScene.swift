@@ -10,6 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
+    let backgroundContainer: SKNode
     let levels = Levels()
     var currentLevel = 0
     
@@ -35,6 +36,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.waitingToBegin = true
         self.bricks = []
         self.scoreLabel = SKLabelNode()
+        self.backgroundContainer = SKNode()
         super.init(coder: aDecoder)
         self.addChild(scoreLabel)
     }
@@ -42,7 +44,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func setupWorld() {
         self.physicsWorld.gravity = CGVector.zeroVector
         self.physicsWorld.contactDelegate = self
-        createBricks()
+        startLevel(0)
     }
     
     func setupBar() {
@@ -55,6 +57,57 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         body.contactTestBitMask = Category.Ball
         self.bar.physicsBody = body
         self.addChild(bar)
+    }
+    
+    func setupBackground() {
+        
+        backgroundContainer.zPosition = -1
+        backgroundContainer.alpha = 0.6
+        self.addChild(backgroundContainer)
+    }
+    
+    func changeBackground(name: String) {
+        var initialAlpha: CGFloat = 1
+        for child in self.backgroundContainer.children {
+            let image = child as? SKSpriteNode
+            if image != nil {
+                initialAlpha = 0
+                image!.runAction(
+                    SKAction.sequence([
+                        SKAction.fadeAlphaTo(0, duration: 3),
+                        SKAction.runBlock({ image!.removeFromParent() })
+                    ]))
+            }
+        }
+        
+        let painting = SKSpriteNode(imageNamed: name)
+        painting.alpha = initialAlpha
+        let paintingSize = painting.size
+        var scaleRatio: CGFloat? = nil
+        var imageRatio = paintingSize.width / paintingSize.height
+        if paintingSize.width < paintingSize.height {
+            scaleRatio = frame.width / paintingSize.width
+        }
+        else {
+            scaleRatio = frame.height / paintingSize.height
+        }
+        painting.size = CGSize(
+            width: paintingSize.width * scaleRatio!,
+            height: paintingSize.height * scaleRatio!)
+        painting.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
+        
+        painting.runAction(SKAction.repeatActionForever(SKAction.sequence([
+            SKAction.group([
+                SKAction.fadeAlphaTo(1, duration: 3),
+                SKAction.moveTo(CGPoint(x: frame.width / 2, y: frame.height / 2), duration: 30),
+                SKAction.scaleTo(2, duration: 30)
+                ]),
+            SKAction.scaleTo(1, duration: 10),
+            SKAction.moveBy(CGVector(dx: -(frame.width - painting.size.width) / 2, dy: 0), duration: 30),
+            SKAction.moveBy(CGVector(dx: (frame.width - painting.size.width), dy: 0), duration: 30),
+        ])))
+        
+        self.backgroundContainer.addChild(painting)
     }
 
     func setScore(value: Int) {
@@ -78,9 +131,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return ball
     }
     
-    func advanceLevel() {
+    func startLevel(level: Int) {
         self.restartBall()
-        self.currentLevel++
+        self.currentLevel = level
+        self.changeBackground("painting" + String(level % 7 + 1))
         self.createBricks()
     }
     
@@ -95,10 +149,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bar.position = CGPoint(x: self.frame.width / 2, y: bar.size.height)
         startMessage.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
         
+        self.setupBackground()
         self.setupBar()
         self.setupWorld()
         self.setScore(score)
-        restartBall()
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -182,7 +236,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if self.bricks.count == 0 {
-            self.advanceLevel()
+            self.startLevel(self.currentLevel + 1)
         }
     }
     
