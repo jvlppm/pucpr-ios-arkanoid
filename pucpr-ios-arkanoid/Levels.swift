@@ -70,9 +70,8 @@ class Level {
                 let x: CGFloat = initialX + CGFloat(col) * brickWidth
                 let y: CGFloat = minY - brickHeight * CGFloat(row)
                 let brick: String = self.data[row][col]
-                let node = createBrick(view, x: x, y: y, color: brick)
+                let node = createBrick(view, x: x, y: y, color: brick, width: brickWidth, height: brickHeight)
                 if node != nil {
-                    node!.size = CGSize(width: brickWidth, height: brickHeight)
                     bricks.append(node!)
                 }
             }
@@ -81,7 +80,7 @@ class Level {
         return bricks
     }
     
-    func createBrick(view: SKNode, x: CGFloat, y: CGFloat, color: String) -> SKSpriteNode? {
+    func createBrick(view: SKNode, x: CGFloat, y: CGFloat, color: String, width: CGFloat, height: CGFloat) -> SKSpriteNode? {
         if color.isEmpty {
             return nil
         }
@@ -106,6 +105,14 @@ class Level {
         shadow.zPosition = -1
         shadow.position = CGPoint(x: 2, y: -4)
         brick.addChild(shadow)
+        
+        let ratioX = width / brick.frame.width
+        let ratioY = height / brick.frame.height
+        
+        brick.size = CGSize(width: width, height: height)
+        shadow.size = CGSize(
+            width: shadow.size.width * ratioX,
+            height: shadow.size.height * ratioY)
         
         view.addChild(brick)
         return brick

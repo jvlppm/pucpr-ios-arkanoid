@@ -9,22 +9,18 @@
 import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-
-    let backgroundContainer: SKNode
     let levels = Levels()
     var currentLevel = 0
     
-    let colors = ["element_blue_rectangle", "element_grey_rectangle"]
-    
+    let backgroundContainer: SKNode
     let startMessage: SKLabelNode
     let bar: SKSpriteNode
     let scoreLabel: SKLabelNode
-    
-    var balls: Array<SKSpriteNode>
-    var moveTouch: UITouch?
+    let hiScoreLabel: SKLabelNode
     
     var bricks: Array<SKNode>
-    
+    var balls: Array<SKSpriteNode>
+    var moveTouch: UITouch?
     var waitingToBegin: Bool
 
     var score = 0
@@ -32,18 +28,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     required init?(coder aDecoder: NSCoder) {
         self.bar = SKSpriteNode(imageNamed: "paddleBlue")
         self.startMessage = SKLabelNode(text: "Posicione a barra para iniciar")
-        self.balls = []
-        self.waitingToBegin = true
-        self.bricks = []
         self.scoreLabel = SKLabelNode()
+        self.hiScoreLabel = SKLabelNode()
         self.backgroundContainer = SKNode()
+        self.balls = []
+        self.bricks = []
+        self.waitingToBegin = true
         super.init(coder: aDecoder)
-        self.addChild(scoreLabel)
     }
     
     override func didMoveToView(view: SKView) {
-        bar.position = CGPoint(x: self.frame.width / 2, y: bar.size.height)
-        
         self.setupStartMessage()
         self.setupBackground()
         self.setupBar()
@@ -58,6 +52,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setupBar() {
+        bar.position = CGPoint(x: self.frame.width / 2, y: bar.size.height)
         let body = SKPhysicsBody(rectangleOfSize: self.bar.size)
         body.friction = 0
         body.restitution = 1
@@ -82,7 +77,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setupScore() {
         self.scoreLabel.fontColor = UIColor.blackColor()
-        self.setScore(score)
+        self.hiScoreLabel.fontColor = UIColor.blackColor()
+        self.scoreLabel.fontName = "GillSans-Bold"
+        self.hiScoreLabel.fontName = self.scoreLabel.fontName
+        self.scoreLabel.fontSize = 16
+        self.hiScoreLabel.fontSize = 16
+        self.scoreLabel.zPosition = 1
+        self.hiScoreLabel.zPosition = 1
+        self.addChild(scoreLabel)
+        self.addChild(hiScoreLabel)
+        let hiScore = NSUserDefaults.standardUserDefaults().integerForKey("highscore")
+        setScore(0)
+        setHighScore(hiScore)
+    }
+    
+    func setScore(value: Int) {
+        self.score = value
+        scoreLabel.text = toString(value)
+        if score >= NSUserDefaults.standardUserDefaults().integerForKey("highscore") {
+            NSUserDefaults.standardUserDefaults().setInteger(score, forKey: "highscore")
+            NSUserDefaults.standardUserDefaults().synchronize()
+            setHighScore(value)
+        }
+        scoreLabel.position = CGPoint(
+            x: hiScoreLabel.frame.width - scoreLabel.frame.width / 2,
+            y: 0)
+    }
+    
+    func setHighScore(value: Int) {
+        hiScoreLabel.text = "HI: " + toString(value)
+        hiScoreLabel.position = CGPoint(
+            x: hiScoreLabel.frame.width / 2,
+            y: scoreLabel.frame.height)
     }
     
     func changeBackground(name: String) {
@@ -91,6 +117,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let image = child as? SKSpriteNode
             if image != nil {
                 initialAlpha = 0
+                image!.removeActionForKey("animations")
                 image!.runAction(
                     SKAction.sequence([
                         SKAction.fadeAlphaTo(0, duration: 3),
@@ -124,15 +151,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             SKAction.scaleTo(1, duration: 10),
             SKAction.moveBy(CGVector(dx: -(frame.width - painting.size.width) / 2, dy: 0), duration: 30),
             SKAction.moveBy(CGVector(dx: (frame.width - painting.size.width), dy: 0), duration: 30),
-        ])))
+        ])), withKey: "animations")
         
         self.backgroundContainer.addChild(painting)
-    }
-
-    func setScore(value: Int) {
-        self.score = value
-        scoreLabel.text = toString(value)
-        self.scoreLabel.position = CGPoint(x: scoreLabel.frame.width / 2, y: frame.height - scoreLabel.frame.height)
     }
     
     func createBall() -> SKSpriteNode {
