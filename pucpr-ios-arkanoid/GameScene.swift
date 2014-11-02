@@ -41,6 +41,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(scoreLabel)
     }
     
+    override func didMoveToView(view: SKView) {
+        bar.position = CGPoint(x: self.frame.width / 2, y: bar.size.height)
+        
+        self.setupStartMessage()
+        self.setupBackground()
+        self.setupBar()
+        self.setupWorld()
+        self.setupScore()
+    }
+    
     func setupWorld() {
         self.physicsWorld.gravity = CGVector.zeroVector
         self.physicsWorld.contactDelegate = self
@@ -56,14 +66,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         body.collisionBitMask = Category.None
         body.contactTestBitMask = Category.Ball
         self.bar.physicsBody = body
+        
+        let shadow = SKSpriteNode(imageNamed: "bar_shadow")
+        shadow.zPosition = -1
+        shadow.position = CGPoint(x: 2, y: -4)
+        bar.addChild(shadow)
         self.addChild(bar)
     }
     
     func setupBackground() {
-        
         backgroundContainer.zPosition = -1
         backgroundContainer.alpha = 0.3
         self.addChild(backgroundContainer)
+    }
+    
+    func setupScore() {
+        self.scoreLabel.fontColor = UIColor.blackColor()
+        self.setScore(score)
     }
     
     func changeBackground(name: String) {
@@ -128,6 +147,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         body.collisionBitMask = Category.None
         body.contactTestBitMask = Category.World | Category.Bar | Category.Brick
         ball.physicsBody = body
+        
+        let shadow = SKSpriteNode(imageNamed: "ball_shadow")
+        shadow.zPosition = -1
+        shadow.position = CGPoint(x: 2, y: -4)
+        ball.addChild(shadow)
         return ball
     }
     
@@ -145,14 +169,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.bricks = self.levels.loadLevel(self, number: self.currentLevel)
     }
     
-    override func didMoveToView(view: SKView) {
-        bar.position = CGPoint(x: self.frame.width / 2, y: bar.size.height)
+    func setupStartMessage() {
         startMessage.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
-        
-        self.setupBackground()
-        self.setupBar()
-        self.setupWorld()
-        self.setScore(score)
+        startMessage.fontColor = UIColor.blackColor()
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {

@@ -102,6 +102,11 @@ class Level {
         brick.userData = NSMutableDictionary()
         brick.userData!["color"] = color
         
+        let shadow = SKSpriteNode(imageNamed: "element_rectangle_shadow")
+        shadow.zPosition = -1
+        shadow.position = CGPoint(x: 2, y: -4)
+        brick.addChild(shadow)
+        
         view.addChild(brick)
         return brick
     }
