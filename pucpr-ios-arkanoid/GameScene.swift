@@ -17,6 +17,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let bar: SKSpriteNode
     let scoreLabel: SKLabelNode
     let hiScoreLabel: SKLabelNode
+    let blueBarTexture: SKTexture
+    let redBarTexture: SKTexture
     
     var bricks: Array<SKNode>
     var balls: Array<SKSpriteNode>
@@ -34,6 +36,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.balls = []
         self.bricks = []
         self.waitingToBegin = true
+        self.blueBarTexture = SKTexture(imageNamed: "paddleBlue")
+        self.redBarTexture = SKTexture(imageNamed: "paddleRed")
         super.init(coder: aDecoder)
     }
     
@@ -203,7 +207,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let location = touch.locationInNode(self)
 
             if grab(location, location: self.bar.position) {
+                self.bar.texture = self.redBarTexture
                 self.moveTouch = touch
+                self.bar.runAction(SKAction.repeatActionForever(SKAction.sequence([
+                    SKAction.runBlock({ self.setScore(max(self.score - 1, 0)) }),
+                    SKAction.waitForDuration(0.15)
+                ])), withKey: "dropPoints")
                 break
             }
         }
@@ -227,6 +236,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let touch = touchObj as UITouch
             if touch == self.moveTouch {
                 self.moveTouch = nil
+                self.bar.texture = self.blueBarTexture
+                self.bar.removeActionForKey("dropPoints")
                 
                 if waitingToBegin {
                     self.beginMove()
