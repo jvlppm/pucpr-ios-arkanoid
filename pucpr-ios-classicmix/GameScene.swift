@@ -156,6 +156,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             live.position = CGPoint(
                 x: frame.width - 6,
                 y: (live.size.height + 6) * CGFloat(self.lives.count) + 6)
+            live.zPosition = 10
             self.lives.append(live)
             self.addChild(live)
         }
@@ -225,6 +226,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     func createBall() -> SKSpriteNode {
         let ball = SKSpriteNode(imageNamed: "ballBlue")
+        ball.zPosition = 9
         let body = SKPhysicsBody(circleOfRadius: ball.size.height / 2)
         body.dynamic = true
         body.allowsRotation = false
@@ -265,6 +267,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     func setupMessages() {
         startMessage.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
         gameOverMessage.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
+        startMessage.zPosition = 10
+        gameOverMessage.zPosition = 10
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
