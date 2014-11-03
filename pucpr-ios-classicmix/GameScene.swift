@@ -8,6 +8,7 @@
 
 import Foundation
 import SpriteKit
+import AVFoundation
 
 class GameScene : SKScene, SKPhysicsContactDelegate {
     
@@ -28,12 +29,14 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     let hiScoreLabel: SKLabelNode
     let blueBarTexture: SKTexture
     let redBarTexture: SKTexture
+    let player: MusicPlayer
     
     var bricks: Array<SKNode>
     var balls: Array<SKSpriteNode>
     var lives: Array<SKSpriteNode>
     var moveTouch: UITouch?
     var waitingToBegin: Bool
+
     
     var score = 0
     
@@ -50,6 +53,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         self.waitingToBegin = true
         self.blueBarTexture = SKTexture(imageNamed: "paddleBlue")
         self.redBarTexture = SKTexture(imageNamed: "paddleRed")
+        self.player = MusicPlayer()
         super.init(coder: aDecoder)
         self.backgroundColor = UIColor.whiteColor()
     }
@@ -243,7 +247,9 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         self.restartBall()
         if self.currentLevel != level {
             self.currentLevel = level
-            self.changeBackground("painting" + String(level % 7 + 1))
+            var resourceNumber = String(level % 7 + 1)
+            self.changeBackground("painting" + resourceNumber)
+            self.player.play("music" + resourceNumber)
         }
         self.createBricks()
     }
@@ -374,6 +380,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         if self.bricks.count == 0 {
             self.startLevel(self.currentLevel + 1)
         }
+        
+        self.player.update(currentTime)
     }
     
     func randomFloat() -> Float {

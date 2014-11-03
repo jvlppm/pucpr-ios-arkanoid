@@ -51,6 +51,36 @@ struct Game {
             }
         }
         
+        static var musicVolume: Float {
+            get {
+                let value: AnyObject? = NSUserDefaults.standardUserDefaults()
+                    .objectForKey("musicVolume")
+                if value == nil {
+                    return 0.5
+                }
+                return value as Float
+            }
+            set(value) {
+                NSUserDefaults.standardUserDefaults()
+                    .setFloat(value, forKey: "musicVolume")
+            }
+        }
+        
+        static var effectsVolume: Float {
+            get {
+                let value: AnyObject? = NSUserDefaults.standardUserDefaults()
+                    .objectForKey("effectsVolume")
+                if value == nil {
+                    return 0.5
+                }
+                return value as Float
+            }
+            set(value) {
+                NSUserDefaults.standardUserDefaults()
+                    .setFloat(value, forKey: "effectsVolume")
+            }
+        }
+        
         static var backgroundAnimations: Bool {
             get {
                 let value: AnyObject? = NSUserDefaults.standardUserDefaults()

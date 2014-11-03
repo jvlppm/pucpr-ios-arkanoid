@@ -92,7 +92,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="GtM-R6-Nxt">
-                                <rect key="frame" x="16" y="100" width="565" height="29"/>
+                                <rect key="frame" x="16" y="57" width="565" height="29"/>
                                 <segments>
                                     <segment title="Easy"/>
                                     <segment title="Normal"/>
@@ -103,39 +103,51 @@
                                 </connections>
                             </segmentedControl>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U3c-fw-Cvn">
-                                <rect key="frame" x="16" y="185" width="51" height="31"/>
+                                <rect key="frame" x="16" y="142" width="51" height="31"/>
                                 <connections>
                                     <action selector="backgroundAnimationsChanged:" destination="yZW-CW-reT" eventType="valueChanged" id="8us-EF-WLs"/>
                                 </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Background animations" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lWr-sU-7HC">
-                                <rect key="frame" x="73" y="190" width="511" height="21"/>
+                                <rect key="frame" x="73" y="147" width="511" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Difficulty" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k8j-C9-Prl">
-                                <rect key="frame" x="16" y="71" width="565" height="21"/>
+                                <rect key="frame" x="16" y="28" width="565" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Appearance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jfc-xu-s00">
-                                <rect key="frame" x="16" y="156" width="568" height="21"/>
+                                <rect key="frame" x="16" y="113" width="568" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Background Opacity" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Niz-QS-9dp">
-                                <rect key="frame" x="16" y="236" width="568" height="21"/>
+                                <rect key="frame" x="16" y="193" width="568" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="fbL-Ag-Hpg">
-                                <rect key="frame" x="14" y="265" width="569" height="31"/>
+                                <rect key="frame" x="14" y="222" width="569" height="31"/>
                                 <connections>
                                     <action selector="backgroundOpacityChanged:" destination="yZW-CW-reT" eventType="valueChanged" id="o1w-CX-VOx"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Music Volume" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sYs-SY-uYl">
+                                <rect key="frame" x="16" y="260" width="568" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="JPI-0d-Ywg">
+                                <rect key="frame" x="14" y="290" width="569" height="31"/>
+                                <connections>
+                                    <action selector="musicVolumeSliderChanged:" destination="yZW-CW-reT" eventType="valueChanged" id="T27-Ji-rWv"/>
                                 </connections>
                             </slider>
                         </subviews>
@@ -149,8 +161,10 @@
                             <constraint firstItem="fbL-Ag-Hpg" firstAttribute="leading" secondItem="pJk-IB-Zvh" secondAttribute="leadingMargin" id="U4D-pM-Ove"/>
                             <constraint firstItem="U3c-fw-Cvn" firstAttribute="leading" secondItem="pJk-IB-Zvh" secondAttribute="leadingMargin" id="W0U-FB-daY"/>
                             <constraint firstItem="k8j-C9-Prl" firstAttribute="trailing" secondItem="pJk-IB-Zvh" secondAttribute="trailingMargin" id="i4Y-fy-eZf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="JPI-0d-Ywg" secondAttribute="trailing" constant="3" id="iQn-Li-uJp"/>
                             <constraint firstItem="Niz-QS-9dp" firstAttribute="leading" secondItem="pJk-IB-Zvh" secondAttribute="leadingMargin" id="m7r-dn-enf"/>
                             <constraint firstItem="lWr-sU-7HC" firstAttribute="leading" secondItem="pJk-IB-Zvh" secondAttribute="leadingMargin" constant="57" id="rGx-s1-TXQ"/>
+                            <constraint firstItem="sYs-SY-uYl" firstAttribute="trailing" secondItem="pJk-IB-Zvh" secondAttribute="trailingMargin" id="yYP-lT-N3l"/>
                             <constraint firstItem="k8j-C9-Prl" firstAttribute="leading" secondItem="pJk-IB-Zvh" secondAttribute="leadingMargin" id="zdU-Jf-Dzc"/>
                         </constraints>
                     </view>
@@ -158,6 +172,7 @@
                         <outlet property="backgroundAnimationsSwitch" destination="U3c-fw-Cvn" id="PaQ-mI-neg"/>
                         <outlet property="backgroundOpacitySlider" destination="fbL-Ag-Hpg" id="VuS-Ch-oSx"/>
                         <outlet property="difficultySegmented" destination="GtM-R6-Nxt" id="0vg-TH-3lD"/>
+                        <outlet property="musicVolumeSlider" destination="JPI-0d-Ywg" id="Zzu-Jw-9tI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oTU-ep-OVP" userLabel="First Responder" sceneMemberID="firstResponder"/>
