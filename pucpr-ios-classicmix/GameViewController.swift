@@ -58,6 +58,10 @@ class GameViewController: UIViewController {
         return true
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        Game.hideNavigation()
+    }
+    
     override func supportedInterfaceOrientations() -> Int {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
             return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)

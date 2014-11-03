@@ -24,10 +24,8 @@ class ViewController: UIViewController {
         let window = self.view.window
         if Game.navigation == nil {
             let navigation = window?.rootViewController as UINavigationController
+            navigation.interactivePopGestureRecognizer.enabled = false
             Game.navigation = navigation
-        }
-        else {
-            Game.hideNavigation()
         }
     }
 }

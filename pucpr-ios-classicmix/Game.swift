@@ -23,4 +23,62 @@ struct Game {
     static func toggleNavigation() {
         Game.navigation?.navigationBarHidden = !Game.navigation!.navigationBarHidden
     }
+    
+    struct Settings {
+        static var highScore: Int {
+            get {
+                return NSUserDefaults.standardUserDefaults()
+                        .integerForKey("highscore")
+            }
+            set(value) {
+                NSUserDefaults.standardUserDefaults()
+                    .setInteger(value, forKey: "highscore")
+            }
+        }
+        
+        static var backgroundOpacity: Float {
+            get {
+                let value: AnyObject? = NSUserDefaults.standardUserDefaults()
+                    .objectForKey("backgroundOpacity")
+                if value == nil {
+                    return 0.6
+                }
+                return value as Float
+            }
+            set(value) {
+                NSUserDefaults.standardUserDefaults()
+                    .setFloat(value, forKey: "backgroundOpacity")
+            }
+        }
+        
+        static var backgroundAnimations: Bool {
+            get {
+                let value: AnyObject? = NSUserDefaults.standardUserDefaults()
+                    .objectForKey("backgroundAnimations")
+                if value == nil {
+                    return true
+                }
+                return value as Bool
+            }
+            set(value) {
+                NSUserDefaults.standardUserDefaults()
+                    .setBool(value, forKey: "backgroundAnimations")
+            }
+        }
+        
+        static var difficulty: Int {
+            get {
+                let value: AnyObject? = NSUserDefaults.standardUserDefaults()
+                .objectForKey("difficulty")
+                if value == nil {
+                    return 1
+                }
+                return value as Int
+            }
+            set(value) {
+                NSUserDefaults.standardUserDefaults()
+                    .setInteger(value, forKey: "difficulty")
+            }
+        }
+    }
 }

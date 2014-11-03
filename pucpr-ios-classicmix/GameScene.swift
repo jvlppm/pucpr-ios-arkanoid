@@ -18,7 +18,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     let levels = Levels()
-    var currentLevel = 0
+    var currentLevel = -1
     
     let backgroundContainer: SKNode
     let startMessage: SKSpriteNode
@@ -51,6 +51,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         self.blueBarTexture = SKTexture(imageNamed: "paddleBlue")
         self.redBarTexture = SKTexture(imageNamed: "paddleRed")
         super.init(coder: aDecoder)
+        self.backgroundColor = UIColor.whiteColor()
     }
     
     override func didMoveToView(view: SKView) {
@@ -88,8 +89,10 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     func setupBackground() {
         backgroundContainer.zPosition = -1
-        backgroundContainer.alpha = 0.7
-        self.addChild(backgroundContainer)
+        backgroundContainer.alpha = CGFloat(Game.Settings.backgroundOpacity)
+        if backgroundContainer.alpha > 0 {
+            self.addChild(backgroundContainer)
+        }
     }
     
     func setupScore() {
@@ -150,7 +153,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         var initialAlpha: CGFloat = 1
         stopBackgroundAnimations(true)
         
-        if self.backgroundContainer.children.count > 0 {
+        if self.backgroundContainer.children.count > 0 && Game.Settings.backgroundAnimations {
             initialAlpha = 0
         }
         
@@ -170,16 +173,18 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             height: paintingSize.height * scaleRatio!)
         painting.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
         
-        painting.runAction(SKAction.repeatActionForever(SKAction.sequence([
-            SKAction.group([
-                SKAction.fadeAlphaTo(1, duration: 3),
-                SKAction.moveTo(CGPoint(x: frame.width / 2, y: frame.height / 2), duration: 30),
-                SKAction.scaleTo(2, duration: 30)
-                ]),
-            SKAction.scaleTo(1, duration: 10),
-            SKAction.moveBy(CGVector(dx: -(frame.width - painting.size.width) / 2, dy: 0), duration: 30),
-            SKAction.moveBy(CGVector(dx: (frame.width - painting.size.width), dy: 0), duration: 30),
+        if Game.Settings.backgroundAnimations {
+            painting.runAction(SKAction.repeatActionForever(SKAction.sequence([
+                SKAction.group([
+                    SKAction.fadeAlphaTo(1, duration: 3),
+                    SKAction.moveTo(CGPoint(x: frame.width / 2, y: frame.height / 2), duration: 30),
+                    SKAction.scaleTo(2, duration: 30)
+                    ]),
+                SKAction.scaleTo(1, duration: 10),
+                SKAction.moveBy(CGVector(dx: -(frame.width - painting.size.width) / 2, dy: 0), duration: 30),
+                SKAction.moveBy(CGVector(dx: (frame.width - painting.size.width), dy: 0), duration: 30),
             ])), withKey: "animations")
+        }
         
         self.backgroundContainer.addChild(painting)
     }
@@ -190,11 +195,17 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             if image != nil {
                 image!.removeActionForKey("animations")
                 if removeBackground {
-                    image!.runAction(
-                        SKAction.sequence([
-                            SKAction.fadeAlphaTo(0, duration: 3),
-                            SKAction.runBlock({ image!.removeFromParent() })
+                    let remove = SKAction.runBlock({ image!.removeFromParent() })
+                    if Game.Settings.backgroundAnimations {
+                        image!.runAction(
+                            SKAction.sequence([
+                                SKAction.fadeAlphaTo(0, duration: 3),
+                                remove
                             ]))
+                    }
+                    else {
+                        image!.runAction(remove)
+                    }
                 }
             }
         }
@@ -222,8 +233,10 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     func startLevel(level: Int) {
         self.restartBall()
-        self.currentLevel = level
-        self.changeBackground("painting" + String(level % 7 + 1))
+        if self.currentLevel != level {
+            self.currentLevel = level
+            self.changeBackground("painting" + String(level % 7 + 1))
+        }
         self.createBricks()
     }
     
@@ -231,6 +244,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         if self.currentLevel >= self.levels.levelList.count {
             self.currentLevel = 0
         }
+        self.removeChildrenInArray(self.bricks)
         self.bricks = self.levels.loadLevel(self, number: self.currentLevel)
     }
     
