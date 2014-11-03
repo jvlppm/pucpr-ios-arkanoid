@@ -13,7 +13,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var currentLevel = 0
     
     let backgroundContainer: SKNode
-    let startMessage: SKLabelNode
+    let startMessage: SKSpriteNode
+    let gameOverMessage: SKSpriteNode
     let bar: SKSpriteNode
     let scoreLabel: SKLabelNode
     let hiScoreLabel: SKLabelNode
@@ -22,6 +23,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var bricks: Array<SKNode>
     var balls: Array<SKSpriteNode>
+    var lives: Array<SKSpriteNode>
     var moveTouch: UITouch?
     var waitingToBegin: Bool
 
@@ -29,12 +31,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     required init?(coder aDecoder: NSCoder) {
         self.bar = SKSpriteNode(imageNamed: "paddleBlue")
-        self.startMessage = SKLabelNode(text: "Posicione a barra para iniciar")
+        self.startMessage = SKSpriteNode(imageNamed: "TouchToBegin")
+        self.gameOverMessage = SKSpriteNode(imageNamed: "GameOver")
         self.scoreLabel = SKLabelNode()
         self.hiScoreLabel = SKLabelNode()
         self.backgroundContainer = SKNode()
         self.balls = []
         self.bricks = []
+        self.lives = []
         self.waitingToBegin = true
         self.blueBarTexture = SKTexture(imageNamed: "paddleBlue")
         self.redBarTexture = SKTexture(imageNamed: "paddleRed")
@@ -42,11 +46,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func didMoveToView(view: SKView) {
-        self.setupStartMessage()
+        self.setupMessages()
         self.setupBackground()
         self.setupBar()
         self.setupWorld()
         self.setupScore()
+        self.setLives(3)
     }
     
     func setupWorld() {
@@ -75,8 +80,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setupBackground() {
         backgroundContainer.zPosition = -1
-        backgroundContainer.alpha = 0.3
+        backgroundContainer.alpha = 1
         self.addChild(backgroundContainer)
+        self.backgroundColor = UIColor.whiteColor()
     }
     
     func setupScore() {
@@ -115,19 +121,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             y: scoreLabel.frame.height)
     }
     
+    func setLives(count: Int) {
+        while(self.lives.count > count) {
+            let live = self.lives.last!
+            self.removeChildrenInArray([live])
+            self.lives.removeLast()
+        }
+        while(self.lives.count < count) {
+            let live = SKSpriteNode(imageNamed: "paddleBlue")
+            live.anchorPoint = CGPoint(x: 1, y: 0)
+            live.size = CGSize(width: live.size.width / 3, height: live.size.height / 3)
+            live.position = CGPoint(
+                x: frame.width - 6,
+                y: (live.size.height + 6) * CGFloat(self.lives.count) + 6)
+            self.lives.append(live)
+            self.addChild(live)
+        }
+    }
+    
     func changeBackground(name: String) {
         var initialAlpha: CGFloat = 1
-        for child in self.backgroundContainer.children {
-            let image = child as? SKSpriteNode
-            if image != nil {
-                initialAlpha = 0
-                image!.removeActionForKey("animations")
-                image!.runAction(
-                    SKAction.sequence([
-                        SKAction.fadeAlphaTo(0, duration: 3),
-                        SKAction.runBlock({ image!.removeFromParent() })
-                    ]))
-            }
+        stopBackgroundAnimations(true)
+        
+        if self.backgroundContainer.children.count > 0 {
+            initialAlpha = 0
         }
         
         let painting = SKSpriteNode(imageNamed: name)
@@ -158,6 +175,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ])), withKey: "animations")
         
         self.backgroundContainer.addChild(painting)
+    }
+    
+    func stopBackgroundAnimations(removeBackground: Bool) {
+        for child in self.backgroundContainer.children {
+            let image = child as? SKSpriteNode
+            if image != nil {
+                image!.removeActionForKey("animations")
+                if removeBackground {
+                    image!.runAction(
+                        SKAction.sequence([
+                            SKAction.fadeAlphaTo(0, duration: 3),
+                            SKAction.runBlock({ image!.removeFromParent() })
+                        ]))
+                }
+            }
+        }
     }
     
     func createBall() -> SKSpriteNode {
@@ -194,9 +227,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.bricks = self.levels.loadLevel(self, number: self.currentLevel)
     }
     
-    func setupStartMessage() {
+    func setupMessages() {
         startMessage.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
-        startMessage.fontColor = UIColor.blackColor()
+        gameOverMessage.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -206,9 +239,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let touch = touchObj as UITouch
             let location = touch.locationInNode(self)
 
-            if grab(location, location: self.bar.position) {
-                self.bar.texture = self.redBarTexture
+            if gameOverMessage.parent == nil && grab(location, location: self.bar.position) {
                 self.moveTouch = touch
+                
+                self.bar.texture = self.redBarTexture
+                
                 self.bar.runAction(SKAction.repeatActionForever(SKAction.sequence([
                     SKAction.runBlock({ self.setScore(max(self.score - 1, 0)) }),
                     SKAction.waitForDuration(0.15)
@@ -242,6 +277,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if waitingToBegin {
                     self.beginMove()
                 }
+            }
+            
+            let location = touch.locationInNode(self)
+            if gameOverMessage.parent != nil && gameOverMessage.containsPoint(location) {
+                
+                gameOverMessage.removeFromParent()
+                setScore(0)
+                setLives(3)
+                startLevel(0)
             }
         }
     }
@@ -348,7 +392,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.balls = self.balls.filter { $0 != ball }
             self.runAction(SKAction.runBlock({
                 if self.balls.count == 0 {
-                    self.restartBall()
+                    if self.lives.count > 0 {
+                        self.setLives(self.lives.count - 1)
+                        self.restartBall()
+                    }
+                    else {
+                        self.gameOver()
+                    }
                 }
                 ball.removeFromParent()
             }))
@@ -371,5 +421,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             brick.texture = SKTexture(imageNamed: getImageName(color.lowercaseString))
             brick.userData!["color"] = color.lowercaseString
         }
+    }
+    
+    func gameOver() {
+        self.addChild(self.gameOverMessage)
+        self.stopBackgroundAnimations(false)
     }
 }
