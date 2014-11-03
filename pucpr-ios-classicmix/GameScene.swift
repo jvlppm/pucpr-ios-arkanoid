@@ -60,7 +60,15 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         self.setupBar()
         self.setupWorld()
         self.setupScore()
-        self.setLives(3)
+        self.resetLives()
+    }
+    
+    func resetLives() {
+        switch Game.Settings.difficulty {
+            case 0: self.setLives(5); break;
+            case 1: self.setLives(3); break;
+            default: self.setLives(2); break;
+        }
     }
     
     func setupWorld() {
@@ -305,7 +313,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
                 
                 gameOverMessage.removeFromParent()
                 setScore(0)
-                setLives(3)
+                resetLives()
                 startLevel(0)
             }
             else if waitingToBegin && startMessage.containsPoint(location) {
@@ -345,7 +353,14 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         direction = direction + CGVector(dx: 0, dy: ball.size.height)
         direction = direction.normalize()
         
-        ball.physicsBody?.applyImpulse(direction * 6)
+        var speed: CGFloat
+        switch Game.Settings.difficulty {
+            case 0: speed = 3; break;
+            case 1: speed = 6; break;
+            default: speed = 8; break;
+        }
+        
+        ball.physicsBody?.applyImpulse(direction * speed)
         
         Game.hideNavigation()
     }
