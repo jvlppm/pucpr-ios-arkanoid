@@ -159,7 +159,7 @@
                             <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Sqz-J1-D75">
                                 <rect key="frame" x="161" y="282" width="425" height="31"/>
                                 <connections>
-                                    <action selector="musicVolumeSliderChanged:" destination="yZW-CW-reT" eventType="valueChanged" id="422-k4-Mhc"/>
+                                    <action selector="effectsVolumeChanged:" destination="yZW-CW-reT" eventType="valueChanged" id="qXu-pv-xgq"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Effect" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Zi-gL-jdy">
@@ -195,6 +195,7 @@
                         <outlet property="backgroundAnimationsSwitch" destination="U3c-fw-Cvn" id="PaQ-mI-neg"/>
                         <outlet property="backgroundOpacitySlider" destination="fbL-Ag-Hpg" id="VuS-Ch-oSx"/>
                         <outlet property="difficultySegmented" destination="GtM-R6-Nxt" id="0vg-TH-3lD"/>
+                        <outlet property="effectsVolumeSlider" destination="Sqz-J1-D75" id="akU-gw-aqX"/>
                         <outlet property="musicVolumeSlider" destination="JPI-0d-Ywg" id="Zzu-Jw-9tI"/>
                     </connections>
                 </viewController>

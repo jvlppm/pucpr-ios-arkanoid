@@ -14,6 +14,7 @@ class SettingsController : UIViewController {
     @IBOutlet weak var backgroundAnimationsSwitch: UISwitch!
     @IBOutlet weak var backgroundOpacitySlider: UISlider!
     @IBOutlet weak var musicVolumeSlider: UISlider!
+    @IBOutlet weak var effectsVolumeSlider: UISlider!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -24,6 +25,7 @@ class SettingsController : UIViewController {
         backgroundOpacitySlider.value = Game.Settings.backgroundOpacity
         difficultySegmented.selectedSegmentIndex = Game.Settings.difficulty
         musicVolumeSlider.value = Game.Settings.musicVolume
+        effectsVolumeSlider.value = Game.Settings.effectsVolume
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -51,5 +53,8 @@ class SettingsController : UIViewController {
     }
     @IBAction func musicVolumeSliderChanged(sender: AnyObject) {
         Game.Settings.musicVolume = musicVolumeSlider.value
+    }
+    @IBAction func effectsVolumeChanged(sender: AnyObject) {
+        Game.Settings.effectsVolume = effectsVolumeSlider.value
     }
 }

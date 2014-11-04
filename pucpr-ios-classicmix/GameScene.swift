@@ -30,6 +30,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     let blueBarTexture: SKTexture
     let redBarTexture: SKTexture
     let player: MusicPlayer
+    let effects: SoundEffects
     
     var bricks: Array<SKNode>
     var balls: Array<SKSpriteNode>
@@ -54,6 +55,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         self.blueBarTexture = SKTexture(imageNamed: "paddleBlue")
         self.redBarTexture = SKTexture(imageNamed: "paddleRed")
         self.player = MusicPlayer()
+        self.effects = SoundEffects()
         super.init(coder: aDecoder)
         self.backgroundColor = UIColor.whiteColor()
     }
@@ -409,15 +411,19 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         
         if ballRect.maxX <= objRect.minX + ballRect.width / 2 {
             ball.velocity.dx = -abs(ball.velocity.dx)
+            effects.bounce()
         }
         else if ballRect.minX >= objRect.maxX - ballRect.width / 2 {
             ball.velocity.dx = abs(ball.velocity.dx)
+            effects.bounce()
         }
         else if ballRect.minY <= objRect.maxY - ballRect.height / 2 {
             ball.velocity.dy = -abs(ball.velocity.dy)
+            effects.bounce()
         }
         else if ballRect.maxY >= objRect.minY + ballRect.height / 2 {
             ball.velocity.dy = abs(ball.velocity.dy)
+            effects.bounce()
         }
         
         if objNode == self.bar && ballRect.minY >= objRect.midY {
@@ -425,6 +431,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             let position = (ballRect.midX - objRect.minX) / objRect.width
             let variation = CGFloat(randomFloat() * 0.1 - 0.05)
             ball.velocity = directionFromAngle(degrees: 170 - (position * 0.95 + variation) * 160) * CGFloat(speed)
+            effects.bounce()
         }
         else if object.categoryBitMask & Category.Brick != 0 {
             self.hitBrick(objNode)
@@ -452,6 +459,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
                     else {
                         self.gameOver()
                     }
+                    self.effects.death()
                 }
                 ball.removeFromParent()
             }))
@@ -468,11 +476,13 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             setScore(score + 100)
             brick.removeFromParent()
             self.bricks = self.bricks.filter { $0 != brick }
+            effects.destroyBrick()
         }
         else {
             setScore(score + 30)
             brick.texture = SKTexture(imageNamed: getImageName(color.lowercaseString))
             brick.userData!["color"] = color.lowercaseString
+            effects.hitBrick()
         }
     }
     

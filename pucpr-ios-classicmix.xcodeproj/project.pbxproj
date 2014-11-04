@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF79DDEA1A0853D500FD9C12 /* Bounce.wav in Resources */ = {isa = PBXBuildFile; fileRef = CF79DDE61A0853D500FD9C12 /* Bounce.wav */; };
+		CF79DDEB1A0853D500FD9C12 /* Explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = CF79DDE71A0853D500FD9C12 /* Explosion.wav */; };
+		CF79DDEC1A0853D500FD9C12 /* Hit_Destroy.wav in Resources */ = {isa = PBXBuildFile; fileRef = CF79DDE81A0853D500FD9C12 /* Hit_Destroy.wav */; };
+		CF79DDED1A0853D500FD9C12 /* Hit_Hurt.wav in Resources */ = {isa = PBXBuildFile; fileRef = CF79DDE91A0853D500FD9C12 /* Hit_Hurt.wav */; };
+		CF79DDEF1A08543000FD9C12 /* SoundEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79DDEE1A08543000FD9C12 /* SoundEffects.swift */; };
 		CFC446381A073CCC002DFFA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC446371A073CCC002DFFA5 /* AppDelegate.swift */; };
 		CFC4463A1A073CCC002DFFA5 /* TitleScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC446391A073CCC002DFFA5 /* TitleScreenController.swift */; };
 		CFC4463D1A073CCC002DFFA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFC4463B1A073CCC002DFFA5 /* Main.storyboard */; };
@@ -42,6 +47,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CF79DDE61A0853D500FD9C12 /* Bounce.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Bounce.wav; sourceTree = "<group>"; };
+		CF79DDE71A0853D500FD9C12 /* Explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Explosion.wav; sourceTree = "<group>"; };
+		CF79DDE81A0853D500FD9C12 /* Hit_Destroy.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Hit_Destroy.wav; sourceTree = "<group>"; };
+		CF79DDE91A0853D500FD9C12 /* Hit_Hurt.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Hit_Hurt.wav; sourceTree = "<group>"; };
+		CF79DDEE1A08543000FD9C12 /* SoundEffects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundEffects.swift; sourceTree = "<group>"; };
 		CFC446321A073CCC002DFFA5 /* pucpr-ios-classicmix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pucpr-ios-classicmix.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFC446361A073CCC002DFFA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFC446371A073CCC002DFFA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +135,7 @@
 				CFFFB7391A07B7B80082B964 /* Game.swift */,
 				CFFFB73B1A07BACC0082B964 /* SettingsController.swift */,
 				CFDDA9F51A0816260027D15F /* MusicPlayer.swift */,
+				CF79DDEE1A08543000FD9C12 /* SoundEffects.swift */,
 			);
 			path = "pucpr-ios-classicmix";
 			sourceTree = "<group>";
@@ -180,6 +191,10 @@
 		CFDDA9E61A0806810027D15F /* sound */ = {
 			isa = PBXGroup;
 			children = (
+				CF79DDE61A0853D500FD9C12 /* Bounce.wav */,
+				CF79DDE71A0853D500FD9C12 /* Explosion.wav */,
+				CF79DDE81A0853D500FD9C12 /* Hit_Destroy.wav */,
+				CF79DDE91A0853D500FD9C12 /* Hit_Hurt.wav */,
 			);
 			name = sound;
 			sourceTree = "<group>";
@@ -266,11 +281,15 @@
 			files = (
 				CFC4465C1A073EEB002DFFA5 /* GameScene.sks in Resources */,
 				CFC4463D1A073CCC002DFFA5 /* Main.storyboard in Resources */,
+				CF79DDEA1A0853D500FD9C12 /* Bounce.wav in Resources */,
 				CFDDAA0D1A08206F0027D15F /* music2.mp3 in Resources */,
+				CF79DDEB1A0853D500FD9C12 /* Explosion.wav in Resources */,
 				CFDDAA121A08206F0027D15F /* music7.mp3 in Resources */,
 				CFDDAA0E1A08206F0027D15F /* music3.mp3 in Resources */,
+				CF79DDEC1A0853D500FD9C12 /* Hit_Destroy.wav in Resources */,
 				CFC446421A073CCC002DFFA5 /* LaunchScreen.xib in Resources */,
 				CFC4463F1A073CCC002DFFA5 /* Images.xcassets in Resources */,
+				CF79DDED1A0853D500FD9C12 /* Hit_Hurt.wav in Resources */,
 				CFDDAA0C1A08206F0027D15F /* music1.mp3 in Resources */,
 				CFDDAA111A08206F0027D15F /* music6.mp3 in Resources */,
 				CFDDAA0F1A08206F0027D15F /* music4.mp3 in Resources */,
@@ -300,6 +319,7 @@
 				CFC4465A1A073D56002DFFA5 /* GameScene.swift in Sources */,
 				CFC446381A073CCC002DFFA5 /* AppDelegate.swift in Sources */,
 				CFFFB7361A07B0020082B964 /* Category.swift in Sources */,
+				CF79DDEF1A08543000FD9C12 /* SoundEffects.swift in Sources */,
 				CFDDA9F61A0816260027D15F /* MusicPlayer.swift in Sources */,
 				CFFFB73A1A07B7B80082B964 /* Game.swift in Sources */,
 			);

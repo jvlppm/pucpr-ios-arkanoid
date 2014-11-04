@@ -51,9 +51,9 @@ class MusicPlayer {
     }
     
     func play(file: String) {
-        var file: NSURL = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource(file, ofType: "mp3")!)!
+        var fileUrl: NSURL = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource(file, ofType: "mp3")!)!
         var error: NSError?
-        let player = AVAudioPlayer(contentsOfURL: file, error: &error)
+        let player = AVAudioPlayer(contentsOfURL: fileUrl, error: &error)
         player.numberOfLoops = -1
         player.volume = 0
         player.prepareToPlay()
